@@ -4,7 +4,8 @@
   "license": "ISC",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && nodemon"
+    "start": "tsc && nodemon",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -18,8 +19,17 @@
     "pg": "^8.6.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.14.5",
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.4.0",
+    "jest": "^27.0.6",
+    "supertest": "^6.1.4",
     "tslint": "5.12.1",
     "typescript": "^4.3.5"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "./dist/"
+    ]
   }
 }
