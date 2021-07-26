@@ -6,4 +6,4 @@ router.get('/api', (req, res) => {
   res.send('The sedulous hyena ate the antelope!');
 });
 
-export default router
+export default router;
