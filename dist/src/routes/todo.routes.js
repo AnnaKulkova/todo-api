@@ -6,9 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_promise_router_1 = __importDefault(require("express-promise-router"));
 const todo_controller_1 = __importDefault(require("../controllers/todo.controller"));
 const router = express_promise_router_1.default();
-router.post('/todos', todo_controller_1.default.createTodo);
-router.get('/todos', todo_controller_1.default.getAllTodos);
-router.patch('/todos', todo_controller_1.default.changeTodo);
-router.delete('/todos', todo_controller_1.default.deleteTodo);
-exports.default = router;
+function default_1(database) {
+    const controller = todo_controller_1.default(database);
+    router.post('/api/todos', controller.createTodo);
+    router.get('/api/todos', controller.getAllTodos);
+    router.patch('/api/todos', controller.changeTodo);
+    router.delete('/api/todos', controller.deleteTodo);
+    return router;
+}
+exports.default = default_1;
 //# sourceMappingURL=todo.routes.js.map

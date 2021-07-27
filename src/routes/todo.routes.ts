@@ -2,9 +2,12 @@ import promiseRouter from 'express-promise-router';
 import todoController from '../controllers/todo.controller';
 
 const router = promiseRouter();
-router.post('/todos', todoController.createTodo);
-router.get('/todos', todoController.getAllTodos);
-router.patch('/todos', todoController.changeTodo);
-router.delete('/todos', todoController.deleteTodo);
 
-export default router;
+export default (database) => {
+  const controller = todoController(database);
+  router.post('/api/todos', controller.createTodo);
+  router.get('/api/todos', controller.getAllTodos);
+  router.patch('/api/todos', controller.changeTodo);
+  router.delete('/api/todos', controller.deleteTodo);
+  return router;
+};

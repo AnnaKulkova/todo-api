@@ -1,5 +1,9 @@
-import app from './src/app';
+import createApp from './src/createApp';
+import db from './src/config/database';
+
 const port = process.env.PORT || 3000;
+
+const app = createApp(db);
 
 app.listen(port, err => {
   if (err) {
