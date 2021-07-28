@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  db-dev:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: todo
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /tmp
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./data/dev:/var/lib/postgresql/data
+  db-test:
+    container_name: postgres-test
+    image: postgres
+    environment:
+      POSTGRES_DB: todo_test
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /tmp
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./data/test:/var/lib/postgresql/data

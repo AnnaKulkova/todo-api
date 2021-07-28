@@ -1,3 +1,21 @@
 language: node_js
 node_js:
   - '12'
+services:
+  - docker
+env:
+  global:
+    - PGPORT=5435
+    - PGUSER=user
+    - PGDATABASE=todo_test
+    - PGPASSWORD=postgres
+jobs:
+  include:
+    - stage: test
+      name: 'Linting'
+      script: yarn lint
+    - stage: test
+      name: 'Unit tests'
+      before_script:
+        - docker-compose up -d
+      script: USE_DOCKER=1 yarn test

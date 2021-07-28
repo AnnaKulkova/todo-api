@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const testDatabase_1 = __importDefault(require("../src/config/testDatabase"));
 const createApp_1 = __importDefault(require("../src/createApp"));
-const URL = '/todos';
+const URL = '/api/todos';
 const app = createApp_1.default(testDatabase_1.default);
 const requester = supertest_1.default(app);
-beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield testDatabase_1.default.query(`
+describe('api', () => {
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        return testDatabase_1.default.query(`
     CREATE TABLE todos(
        id VARCHAR(255),
        title VARCHAR(255),
@@ -27,26 +28,40 @@ beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
        completed BOOLEAN,
        color VARCHAR(255)
       );`);
-}));
-beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
-    return testDatabase_1.default.query(`INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)`, ['123', 'test_to_do', 'test_desc', 'white', false]);
-}));
-afterEach(() => __awaiter(void 0, void 0, void 0, function* () {
-    return testDatabase_1.default.query(`DELETE FROM todos`);
-}));
-afterAll(() => {
-    testDatabase_1.default.query(`DROP TABLE todos;`);
-});
-describe('api', () => {
+    }));
+    beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+        return testDatabase_1.default.query(`INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)`, ['123', 'test_to_do', 'test_desc', 'white', false]);
+    }));
+    afterEach(() => __awaiter(void 0, void 0, void 0, function* () { return testDatabase_1.default.query(`DELETE FROM todos`); }));
+    afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield testDatabase_1.default.query(`DROP TABLE todos;`);
+    }));
     it('should return all todos from table', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield requester.get(URL);
-        expect(res.body.body.todos).toEqual([{
-                id: '123',
-                title: 'test_to_do',
-                description: 'test_desc',
-                color: 'white',
-                completed: false
-            }]);
+        expect(res.status).toEqual(201);
+    }));
+    it('should add new todo item to db', () => __awaiter(void 0, void 0, void 0, function* () {
+        const MOCKED_ITEM = {
+            title: 'new_item',
+            description: '',
+            color: 'red',
+        };
+        const res = yield requester.post(URL).send(MOCKED_ITEM);
+        expect(res.status).toEqual(201);
+    }));
+    it('should delete todo item from db', () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield requester.delete(`${URL}?id=123`);
+        expect(res.status).toEqual(201);
+    }));
+    it('should change todo item', () => __awaiter(void 0, void 0, void 0, function* () {
+        const MOCKED_ITEM = {
+            title: 'new_item',
+            description: '',
+            color: 'red',
+            completed: true,
+        };
+        const res = yield requester.patch(`${URL}?id=123`).send(MOCKED_ITEM);
+        expect(res.status).toEqual(201);
     }));
 });
 //# sourceMappingURL=api.test.js.map

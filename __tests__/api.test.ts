@@ -9,26 +9,28 @@ const app = createApp(db);
 const requester = request(app);
 
 describe('api', () => {
-
-  beforeAll(async () => db.query(`
+  beforeAll(async () =>
+    db.query(`
     CREATE TABLE todos(
        id VARCHAR(255),
        title VARCHAR(255),
        description TEXT,
        completed BOOLEAN,
        color VARCHAR(255)
-      );`
-  ));
+      );`)
+  );
 
-  beforeEach(async () => db.query(
-    `INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)`,
-    ['123', 'test_to_do', 'test_desc', 'white', false]
-  ));
+  beforeEach(async () =>
+    db.query(
+      `INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)`,
+      ['123', 'test_to_do', 'test_desc', 'white', false]
+    )
+  );
 
   afterEach(async () => db.query(`DELETE FROM todos`));
 
   afterAll(async () => {
-    await db.query(`DROP TABLE todos;`)
+    await db.query(`DROP TABLE todos;`);
   });
 
   it('should return all todos from table', async () => {
@@ -56,11 +58,9 @@ describe('api', () => {
       title: 'new_item',
       description: '',
       color: 'red',
-      completed: true
+      completed: true,
     };
     const res = await requester.patch(`${URL}?id=123`).send(MOCKED_ITEM);
-    expect(res.status).toEqual(201)
+    expect(res.status).toEqual(201);
   });
-})
-
-
+});
