@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc && nodemon",
     "test": "jest --passWithNoTests",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "migrate": "node dist/migrations/migrate.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
