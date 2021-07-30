@@ -14,9 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const testDatabase_1 = __importDefault(require("../src/config/testDatabase"));
-const createApp_1 = __importDefault(require("../src/createApp"));
+const app_1 = __importDefault(require("../src/app"));
+const todo_controller_1 = __importDefault(require("../src/controllers/todo.controller"));
+const todo_routes_1 = __importDefault(require("../src/routes/todo.routes"));
 const URL = '/api/todos';
-const app = createApp_1.default(testDatabase_1.default);
+const controller = new todo_controller_1.default(testDatabase_1.default);
+const { router } = new todo_routes_1.default(controller);
+const app = new app_1.default(router);
 const requester = supertest_1.default(app);
 describe('api', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {

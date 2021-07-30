@@ -1,13 +1,24 @@
 import promiseRouter from 'express-promise-router';
-import todoController from '../controllers/todo.controller';
 
-const router = promiseRouter();
+import { IRouter } from 'express';
+import { ITodoController } from '../interfaces';
 
-export default (database) => {
-  const controller = todoController(database);
-  router.post('/api/todos', controller.createTodo);
-  router.get('/api/todos', controller.getAllTodos);
-  router.patch('/api/todos', controller.changeTodo);
-  router.delete('/api/todos', controller.deleteTodo);
-  return router;
-};
+class TodoRouter implements IRouter {
+  private _router = promiseRouter();
+
+  private _controller: ITodoController;
+
+  constructor(controller: ITodoController) {
+    this._controller = controller;
+    this._router.post('/api/todos', this._controller.createTodo);
+    this._router.get('/api/todos', this._controller.getAllTodos);
+    this._router.patch('/api/todos', this._controller.changeTodo);
+    this._router.delete('/api/todos', this._controller.deleteTodo);
+  }
+
+  get router() {
+    return this._router;
+  }
+}
+
+export default TodoRouter;

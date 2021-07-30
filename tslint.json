@@ -5,7 +5,11 @@
   "rules": {
     "no-console": false,
     "quotemark": [true, "single", "avoid-escape", "avoid-template"],
-    "trailing-comma": [false]
+    "trailing-comma": [false],
+    "variable-name": [true,
+      "allow-leading-underscore"
+    ],
+    "semicolon": [true, "always", "ignore-bound-class-methods"]
   },
   "rulesDirectory": []
 }

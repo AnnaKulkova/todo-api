@@ -8,6 +8,8 @@ const express_1 = __importDefault(require("express"));
 const routes_1 = __importDefault(require("./routes"));
 const todo_routes_1 = __importDefault(require("./routes/todo.routes"));
 const app = express_1.default();
+class App {
+}
 exports.default = (database) => {
     app.use(express_1.default.urlencoded({ extended: true }));
     app.use(express_1.default.json());
