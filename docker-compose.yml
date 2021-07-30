@@ -1,6 +1,6 @@
 version: '3.4'
 services:
-  db-dev:
+  postgres:
     container_name: postgres
     image: postgres
     environment:
@@ -9,10 +9,10 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /tmp
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
       - ./data/dev:/var/lib/postgresql/data
-  db-test:
+  postgres-test:
     container_name: postgres-test
     image: postgres
     environment:
@@ -24,3 +24,16 @@ services:
       - "5435:5432"
     volumes:
       - ./data/test:/var/lib/postgresql/data
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://user:postgres@postgres:5432/todo
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
