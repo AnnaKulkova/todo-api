@@ -4,14 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_promise_router_1 = __importDefault(require("express-promise-router"));
-const todo_controller_1 = __importDefault(require("../controllers/todo.controller"));
-const router = express_promise_router_1.default();
-exports.default = (database) => {
-    const controller = todo_controller_1.default(database);
-    router.post('/api/todos', controller.createTodo);
-    router.get('/api/todos', controller.getAllTodos);
-    router.patch('/api/todos', controller.changeTodo);
-    router.delete('/api/todos', controller.deleteTodo);
-    return router;
-};
+class TodoRouter {
+    constructor(controller) {
+        this._router = express_promise_router_1.default();
+        this._controller = controller;
+        this._router.post('/api/todos', this._controller.createTodo);
+        this._router.get('/api/todos', this._controller.getAllTodos);
+        this._router.patch('/api/todos', this._controller.changeTodo);
+        this._router.delete('/api/todos', this._controller.deleteTodo);
+    }
+    get router() {
+        return this._router;
+    }
+}
+exports.default = TodoRouter;
 //# sourceMappingURL=todo.routes.js.map

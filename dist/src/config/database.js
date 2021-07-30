@@ -6,13 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const pg_1 = require("pg");
 dotenv_1.default.config();
-const pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL,
-});
-pool.on('connect', () => {
-    console.log('Connection established!');
-});
-exports.default = {
-    query: (text, params = []) => pool.query(text, params),
-};
+class Database {
+    constructor() {
+        this._pool = new pg_1.Pool({
+            connectionString: process.env.DATABASE_URL,
+        });
+        this.query = (text, params = []) => this._pool.query(text, params);
+        this._pool.on('connect', () => {
+            console.log('Connection established!');
+        });
+    }
+}
+exports.default = new Database();
 //# sourceMappingURL=database.js.map

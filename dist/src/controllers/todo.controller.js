@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-function todoController(database) {
-    return {
-        changeTodo: (req, res) => __awaiter(this, void 0, void 0, function* () {
+class TodoController {
+    constructor(database) {
+        this.changeTodo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, description, color, completed } = req.body;
             try {
-                yield database.query(`
+                yield this.database.query(`
             UPDATE todos
             SET completed=${completed},
                 title='${title}',
@@ -35,12 +35,12 @@ function todoController(database) {
             catch (e) {
                 console.log(e);
             }
-        }),
-        createTodo: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        });
+        this.createTodo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const id = String(Date.now());
             const { title, description, color } = req.body;
             try {
-                yield database.query('INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)', [id, title, description, color, false]);
+                yield this.database.query('INSERT INTO todos (id, title, description, color, completed) VALUES ($1, $2, $3, $4, $5)', [id, title, description, color, false]);
                 res.status(201).send({
                     body: {
                         todo: {
@@ -57,10 +57,10 @@ function todoController(database) {
             catch (e) {
                 console.log(e);
             }
-        }),
-        deleteTodo: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        });
+        this.deleteTodo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database.query(`DELETE FROM todos WHERE id='${req.query.id}'`);
+                yield this.database.query(`DELETE FROM todos WHERE id='${req.query.id}'`);
                 res.status(201).send({
                     body: { id: req.query.id },
                     message: 'Todo deleted',
@@ -69,10 +69,10 @@ function todoController(database) {
             catch (e) {
                 console.log(e);
             }
-        }),
-        getAllTodos: (req, res) => __awaiter(this, void 0, void 0, function* () {
+        });
+        this.getAllTodos = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database.query('SELECT * from todos');
+                const response = yield this.database.query('SELECT * from todos');
                 res.status(201).send({
                     body: {
                         todos: response.rows,
@@ -82,8 +82,9 @@ function todoController(database) {
             catch (e) {
                 console.log(e);
             }
-        }),
-    };
+        });
+        this.database = database;
+    }
 }
-exports.default = todoController;
+exports.default = TodoController;
 //# sourceMappingURL=todo.controller.js.map

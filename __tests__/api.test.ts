@@ -1,10 +1,16 @@
 import request from 'supertest';
 import db from '../src/config/testDatabase';
-import createApp from '../src/createApp';
+import App from '../src/app';
+import TodoController from '../src/controllers/todo.controller';
+import TodoRouter from '../src/routes/todo.routes';
 
 const URL = '/api/todos';
 
-const app = createApp(db);
+const controller = new TodoController(db);
+
+const { router } = new TodoRouter(controller);
+
+const { app } = new App(router);
 
 const requester = request(app);
 

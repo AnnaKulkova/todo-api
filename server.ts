@@ -1,13 +1,14 @@
-import createApp from './src/createApp';
+import App from './src/app';
 import db from './src/config/database';
+import TodoRouter from './src/routes/todo.routes';
+import TodoController from './src/controllers/todo.controller';
 
-const port = process.env.PORT || 3000;
+const port = Number(process.env.PORT) || 3000;
 
-const app = createApp(db);
+const controller = new TodoController(db);
 
-app.listen(port, err => {
-  if (err) {
-    return console.error(err);
-  }
-  return console.log(`server is listening on ${port}`);
-});
+const { router } = new TodoRouter(controller);
+
+const app = new App(router);
+
+app.listen(port);

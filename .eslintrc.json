@@ -22,7 +22,8 @@
     "rules": {
         "no-console": "off",
         "prettier/prettier": "error",
-        "import/extensions": 0
+        "import/extensions": 0,
+        "no-underscore-dangle": 0
     },
     "settings": {
         "import/resolver": {
